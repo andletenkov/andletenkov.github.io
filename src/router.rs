@@ -17,8 +17,8 @@ pub(crate) enum Route {
     #[layout(Blog)]
     #[route("/")]
     BlogList {},
-    #[route("/post/:title")]
-    BlogPost { title: String },
+    #[route("/post/:id")]
+    BlogPost { id: String },
     #[end_layout]
     #[end_nest]
     #[end_layout]

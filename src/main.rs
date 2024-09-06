@@ -11,7 +11,10 @@ mod router;
 #[component]
 pub fn App() -> Element {
     rsx! {
-        Router::<Route> {}
+        div {
+            class: "dark:bg-gray-300",
+            Router::<Route> {}
+        }
     }
 }
 
