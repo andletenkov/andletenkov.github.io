@@ -51,9 +51,8 @@ async fn fetch_from_github(
 #[component]
 pub(crate) fn Blog() -> Element {
     rsx! {
-        div { class: "mx-auto px-6 py-10 bg-gray-50 dark:bg-gray-800 shadow-lg",
-            h1 {
-                class: "text-5xl font-bold text-purple-700 dark:text-purple-300 text-center mb-8",
+        div { class: "flex-grow mx-0 px-6 py-6 bg-gray-50 dark:bg-gray-800",
+            h1 { class: "text-5xl font-bold text-purple-700 dark:text-purple-300 text-center mb-6",
                 "Blog"
             }
             Outlet::<Route> {}
@@ -67,15 +66,10 @@ pub(crate) fn BlogList() -> Element {
 
     match &*future.read_unchecked() {
         Some(Ok(metadata)) => rsx! {
-            div { class: "mx-auto px-6 py-10 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg",
-                h2 {
-                    class: "text-3xl font-semibold text-purple-700 dark:text-purple-300 text-center mb-6",
-                    "Choose a post"
-                }
+            div { class: "mx-auto bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg",
                 ul { class: "space-y-4",
                     for post in metadata {
-                        li {
-                            class: "p-6 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-teal-100 dark:hover:bg-teal-900 transition duration-200",
+                        li { class: "p-6 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-teal-100 dark:hover:bg-teal-900 transition duration-200",
                             Link {
                                 class: "text-xl text-teal-500 dark:text-teal-400 font-medium hover:underline",
                                 to: Route::BlogPost {
@@ -84,8 +78,7 @@ pub(crate) fn BlogList() -> Element {
                                 "{post.title}"
                             }
                             br {}
-                            span {
-                                class: "text-sm text-gray-700 dark:text-gray-400",
+                            span { class: "text-sm text-gray-700 dark:text-gray-400",
                                 "{post.creation_date}"
                             }
                         }
@@ -94,14 +87,10 @@ pub(crate) fn BlogList() -> Element {
             }
         },
         Some(Err(_)) => rsx! {
-            div { class: "text-coral-600 dark:text-coral-400 text-center",
-                "Loading posts failed"
-            }
+            div { class: "text-coral-600 dark:text-coral-400 text-center", "Loading posts failed" }
         },
         None => rsx! {
-            div { class: "text-amber-600 dark:text-amber-400 text-center",
-                "Loading posts..."
-            }
+            div { class: "text-amber-600 dark:text-amber-400 text-center", "Loading posts..." }
         },
     }
 }
@@ -122,8 +111,7 @@ pub(crate) fn BlogPost(id: ReadOnlySignal<String>) -> Element {
         Some(Ok(content)) => {
             let html = markdown_to_html(&content);
             rsx! {
-                div {
-                    class: "container prose dark:prose-invert mx-auto px-6 py-10 bg-gray-50 dark:bg-gray-900 rounded-lg shadow-lg w-full max-w-6xl",
+                div { class: "container prose dark:prose-invert mx-auto px-6 py-10 bg-gray-50 dark:bg-gray-900 rounded-lg shadow-lg w-full max-w-6xl",
                     p {
                         dangerous_inner_html: html,
                         onmounted: move |_| {

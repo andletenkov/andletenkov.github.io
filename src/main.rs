@@ -1,5 +1,6 @@
 #![allow(non_snake_case)]
 
+use components::footer::Footer;
 use dioxus::prelude::*;
 use dioxus_logger::tracing::Level;
 
@@ -14,7 +15,8 @@ mod theme;
 pub fn App() -> Element {
     theme::init();
     rsx! {
-        Router::<Route> {}
+        main { class: "min-h-screen flex flex-col", Router::<Route> {} }
+        Footer {}
     }
 }
 
