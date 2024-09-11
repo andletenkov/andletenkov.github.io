@@ -1,7 +1,6 @@
 use dioxus::prelude::*;
 
-use dioxus_logger::tracing::info;
-use pulldown_cmark::{html, CodeBlockKind, Event, Options, Parser, Tag};
+use pulldown_cmark::{html, Parser};
 use serde::Deserialize;
 
 use crate::router::Route;
@@ -52,8 +51,13 @@ async fn fetch_from_github(
 #[component]
 pub(crate) fn Blog() -> Element {
     rsx! {
-        h1 { "Blog" }
-        Outlet::<Route> {}
+        div { class: "mx-auto px-6 py-10 bg-gray-50 dark:bg-gray-800 shadow-lg",
+            h1 {
+                class: "text-5xl font-bold text-purple-700 dark:text-purple-300 text-center mb-8",
+                "Blog"
+            }
+            Outlet::<Route> {}
+        }
     }
 }
 
@@ -63,27 +67,41 @@ pub(crate) fn BlogList() -> Element {
 
     match &*future.read_unchecked() {
         Some(Ok(metadata)) => rsx! {
-            h2 { "Choose a post" }
-            ul {
-                for post in metadata {
-                    li {
-                        Link {
-                            to: Route::BlogPost {
-                                id: post.id.clone(),
-                            },
-                            "{post.title}"
+            div { class: "mx-auto px-6 py-10 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg",
+                h2 {
+                    class: "text-3xl font-semibold text-purple-700 dark:text-purple-300 text-center mb-6",
+                    "Choose a post"
+                }
+                ul { class: "space-y-4",
+                    for post in metadata {
+                        li {
+                            class: "p-6 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-teal-100 dark:hover:bg-teal-900 transition duration-200",
+                            Link {
+                                class: "text-xl text-teal-500 dark:text-teal-400 font-medium hover:underline",
+                                to: Route::BlogPost {
+                                    id: post.id.clone(),
+                                },
+                                "{post.title}"
+                            }
+                            br {}
+                            span {
+                                class: "text-sm text-gray-700 dark:text-gray-400",
+                                "{post.creation_date}"
+                            }
                         }
-                        br {}
-                        "{post.creation_date}"
                     }
                 }
             }
         },
         Some(Err(_)) => rsx! {
-            div { "Loading posts failed" }
+            div { class: "text-coral-600 dark:text-coral-400 text-center",
+                "Loading posts failed"
+            }
         },
         None => rsx! {
-            div { "Loading posts..." }
+            div { class: "text-amber-600 dark:text-amber-400 text-center",
+                "Loading posts..."
+            }
         },
     }
 }
@@ -104,22 +122,29 @@ pub(crate) fn BlogPost(id: ReadOnlySignal<String>) -> Element {
         Some(Ok(content)) => {
             let html = markdown_to_html(&content);
             rsx! {
-                p {
-                    dangerous_inner_html: html,
-                    onmounted: move |_| {
-                        js_sys::eval("hljs.highlightAll();").expect("Error highlighting code");
+                div {
+                    class: "container prose dark:prose-invert mx-auto px-6 py-10 bg-gray-50 dark:bg-gray-900 rounded-lg shadow-lg w-full max-w-6xl",
+                    p {
+                        dangerous_inner_html: html,
+                        onmounted: move |_| {
+                            js_sys::eval("hljs.highlightAll();").expect("Error highlighting code");
+                        }
                     }
                 }
             }
         }
         Some(Err(err)) => {
             rsx! {
-                div { "Loading post failed {err}" }
+                div { class: "text-coral-600 dark:text-coral-400 text-center py-10",
+                    "Loading post failed: {err}"
+                }
             }
         }
         None => {
             rsx! {
-                div { "Loading post..." }
+                div { class: "text-amber-600 dark:text-amber-400 text-center py-10",
+                    "Loading post..."
+                }
             }
         }
     }

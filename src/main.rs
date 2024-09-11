@@ -7,14 +7,14 @@ use router::Route;
 
 mod components;
 mod router;
+mod storage;
+mod theme;
 
 #[component]
 pub fn App() -> Element {
+    theme::init();
     rsx! {
-        div {
-            class: "dark:bg-gray-300",
-            Router::<Route> {}
-        }
+        Router::<Route> {}
     }
 }
 
