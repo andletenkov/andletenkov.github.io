@@ -31,14 +31,13 @@ watch_path = ["src", "assets"]
 
 # CSS style file
 style = [
-    # "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css",
     "/tailwind.css",
     "/dracula.css"
 ]
 
 # Javascript code file
 script = [
-    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js",
+    "/highlight.js",
 ]
 
 [web.resource.dev]
