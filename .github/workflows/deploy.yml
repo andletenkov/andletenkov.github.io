@@ -9,7 +9,19 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: "install npm"
-        uses: actions/setup-node@v4
-      - name: "deploy dioxus app"
-        uses: DioxusLabs/deploy-action@0.1.1
+      - name: checkout repo
+        uses: actions/checkout@v3
+      - name: setup environment
+        uses: jdx/mise-action@v2
+      - name: add wasm target
+        run: rustup target add wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+      - name: build app 🎁
+        shell: bash
+        run: dx build --release && cp ./dist/index.html ./dist/404.html
+      - name: deploy app 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          branch: gh-pages
+          folder: ./dist
+          clean: false
