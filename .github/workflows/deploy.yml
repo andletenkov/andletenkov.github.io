@@ -1,0 +1,15 @@
+name: github pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "install npm"
+        uses: actions/setup-node@v4
+      - name: "deploy dioxus app"
+        uses: DioxusLabs/deploy-action@0.1.2
