@@ -12,4 +12,4 @@ jobs:
       - name: "install npm"
         uses: actions/setup-node@v4
       - name: "deploy dioxus app"
-        uses: DioxusLabs/deploy-action@0.1.2
+        uses: DioxusLabs/deploy-action@0.1.1
